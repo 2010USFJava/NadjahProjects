@@ -1,12 +1,19 @@
 package com.BoN.Users;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.BoN.Persist.BankLogger;
+import com.BoN.Persist.Filer;
 import com.BoN.Persist.Lists;
 
-public class Customer extends Users{
-      final private UserType uType = UserType.customer;
+public class Customer extends Users implements Serializable{
+      /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+      private UserType userType = UserType.customer;
       private boolean  appStatus = false;
       List<Account> associatedAcct = new ArrayList<Account>();
       
@@ -29,11 +36,11 @@ public class Customer extends Users{
 		super();
 		this.appStatus = appStatus;
 		this.associatedAcct.add(acct);
-		
+	
 		
 		Lists.uMap.put(this.getUserId(),this);
-		//TODO write to file
-		//TODO log
+		Filer.writeUserFile(Lists.uMap);
+		BankLogger.LogIt("info", "New Customer " + this.userId + " associated with account" + acct + " was created ");
 	}
 	public Customer(boolean appStatus, Account ...acct) {
 		super();
@@ -43,8 +50,8 @@ public class Customer extends Users{
 		}
 		
 		Lists.uMap.put(this.getUserId(),this);
-		//TODO write to file
-		//TODO log
+		Filer.writeUserFile(Lists.uMap);
+		BankLogger.LogIt("info", "New Customer " + this.userId + " with various accounts created:" + acct.toString());
 	}
 	public Customer() {
 		super();
@@ -56,13 +63,10 @@ public class Customer extends Users{
 		this.appStatus = appStatus;
 		this.associatedAcct = associatedAcct;
 		Lists.uMap.put(this.getUserId(),this);
-		//TODO write to file
-		//TODO log
+		Filer.writeUserFile(Lists.uMap);
+		BankLogger.LogIt("info", "New Customer " + this.getUserId() + " was created ");
 	}
 
-	public UserType getuType() {
-		return uType;
-	}
 
 
 	public boolean isAppStatus() {
@@ -79,6 +83,20 @@ public class Customer extends Users{
 
 	public void setAssociatedAcct(List<Account> associatedAcct) {
 		this.associatedAcct = associatedAcct;
+	}
+
+	@Override
+	public String toString() {
+		return "User: " + userType + "\n appStatus: " + appStatus + "\n Associated Accounts" 
+				+ "\n username: " + username + "\n  password: " + password + "/n name: " + name + "\n userId: " + userId;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
 	}
      
    

@@ -1,11 +1,20 @@
 package com.BoN.Users;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Account {
+import com.BoN.Persist.BankLogger;
+import com.BoN.Persist.Filer;
+import com.BoN.Persist.Lists;
+
+public class Account implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean acctStatus = false;
 	private float balance;
 	List<Customer> acctHolder = new ArrayList<Customer>();
@@ -53,14 +62,16 @@ public class Account {
 				 if((amountValidation(tAmt)==true)){
 					 tAcct.balance -= tAmt;
 					 System.out.println("Which one of your accounts will you be transferring to?");
-					 for (int j = 0; i < v.length; i++) { // selects the account
+					 for (int j = 0; i < v.length; j++) { // selects the account
 							System.out.println("Would you like to transfer to this account? (y/n) ");
 							System.out.println(v[j]);
 							choice.nextLine();
 							if( choice.equals("y")) {
 								v[j].balance += tAmt;
 								System.out.println("Transfer complete!");
-								//TODO log
+								Filer.writeUserFile(Lists.uMap);
+								BankLogger.LogIt("info", "Tranfer of " + amount + " was made from account "
+								+ v[i].getAcctNumber() + " to account " + v[j].getAcctNumber());
 								return;
 							}else {
 								break;
@@ -86,8 +97,11 @@ public class Account {
 		amountValidation(amount);
 		this.balance += balance;
 		String msg = "Deposit successful: your new balance is " + this.balance;
+		BankLogger.LogIt("info", "Deposit of " + amount + " was made to account " + this.acctNumber);
+		Filer.writeUserFile(Lists.uMap);
 		return msg;
-		//TODO log
+		
+		
 	}
 	
 	public String withdraw(float amount) {
@@ -102,35 +116,41 @@ public class Account {
 		
 		this.balance -= withdraw;
 		String result = "Withdrawal successful. Your remaining balance is $" + this.balance;
-		//TODO log
-			
+		BankLogger.LogIt("info", "Withdrawal of " + amount + " was made from account " + this.acctNumber);
+		Filer.writeUserFile(Lists.uMap);	
 		return result;
 	}
 
-	public Account(boolean acctStatus, float balance, List<Customer> acctHolder, int acctNumber) {
+	public Account(boolean acctStatus, float balance, List<Customer> acctHolder) {
 		super();
 		this.acctStatus = acctStatus;
 		this.balance = balance;
 		this.acctHolder = acctHolder;
-		this.acctNumber = acctNumber;
+		this.acctNumber = genAcctNumber();
+		Lists.uMap.put(this.acctNumber,acctHolder.get(0));
+		Filer.writeUserFile(Lists.uMap);
 	}
 	
-	public Account(boolean acctStatus, float balance, Customer acctHolder, int acctNumber) {
+	public Account(boolean acctStatus, float balance, Customer acctHolder) {
 		super();
 		this.acctStatus = acctStatus;
 		this.balance = balance;
 		this.acctHolder.add(acctHolder);
-		this.acctNumber = acctNumber;
+		this.acctNumber = genAcctNumber();
+		Lists.uMap.put(this.acctNumber,acctHolder);
+		Filer.writeUserFile(Lists.uMap);
 	}
 	
-	public Account(boolean acctStatus, float balance,  int acctNumber, Customer ...acctHolder) {
+	public Account(boolean acctStatus, float balance, Customer ...acctHolder) {
 		super();
 		this.acctStatus = acctStatus;
 		this.balance = balance;
 		for (int i = 0; i < acctHolder.length; i++) {
 			this.acctHolder.add(acctHolder[i]);
 		}
-		this.acctNumber = acctNumber;
+		this.acctNumber = genAcctNumber();
+		Lists.uMap.put(this.acctNumber,acctHolder[0]);
+		Filer.writeUserFile(Lists.uMap);
 	}
 	public boolean isAcctStatus() {
 		return acctStatus;

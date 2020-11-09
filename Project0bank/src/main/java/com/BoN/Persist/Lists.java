@@ -9,23 +9,20 @@ import com.BoN.Users.Users;
 
 public class Lists implements Serializable {
 
-	/**
-	 * 
-	 */
-	// private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	public static Map<String, String> uAndP = new HashMap<String, String>();
 	public static Map<Integer, Users> uMap = new HashMap<Integer, Users>();
-	// protected static Set <Employee> eList= new HashSet<Employee>();
+
 
 	public static Users loginValidation(String u, String p) {
 		Users isLogin = null;
 		String thisPerson;
 		if(uAndP.containsKey(u)) { //if uandp contains this username
 			thisPerson = uAndP.get(u);
-			if(thisPerson == p) { //if the password matches the username
+			if(thisPerson.equals(p)) { //if the password matches the username
 				for (Iterator<Users> iterator = uMap.values().iterator(); iterator.hasNext();) { //for the values 
 					Users thisOne = iterator.next();
-					if(thisOne.getUsername() == u) {
+					if(thisOne.getUsername().equals(u) ) {
 						isLogin = thisOne;
 				
 					}else{ 
@@ -48,11 +45,22 @@ public class Lists implements Serializable {
 
 		return thisUser;
 	}
-	
-	public void readCustomers() {
-		 
-			//
-			
+	public static Users getUserByUsername(String user) {
+		Users thisUser = null;
+		String u = uAndP.get(user);
 		
-	   }
+		if(uAndP.containsKey(u)) { //if uandp contains this username
+				for (Iterator<Users> iterator = uMap.values().iterator(); iterator.hasNext();) { //for the values 
+					Users thisOne = iterator.next();
+					if(thisOne.getUsername().equals(u) ) {
+						thisUser = thisOne;
+				
+					}else{ 
+						System.out.println("User not found");
+					}
+				}
+		}
+		return thisUser;
+	}
 }
+

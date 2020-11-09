@@ -1,10 +1,12 @@
 package com.BoN.Users;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import com.BoN.Persist.Lists;
 
-public abstract class Users {
+public abstract class Users implements Serializable {
+	//TODO get rid of this
 	private UserType userType;
 	private static Random random = new Random();
 	protected String username;

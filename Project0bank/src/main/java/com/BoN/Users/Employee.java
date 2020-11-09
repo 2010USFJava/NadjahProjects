@@ -1,9 +1,15 @@
 package com.BoN.Users;
 
+import java.io.Serializable;
+
 import com.BoN.Persist.Lists;
 
-public class Employee extends Users {
-	final UserType uType = UserType.employee;
+public class Employee extends Users implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	final UserType userType = UserType.employee;
 
 	// read list of customers
 
@@ -22,14 +28,14 @@ public class Employee extends Users {
 		// TODO write and log
 	}
 
-	public UserType getuType() {
-		return uType;
+	public UserType getUserType() {
+		return userType;
 	}
 
 
 	@Override
 	public String toString() {
-		return "User Type: " + uType + "\n Username: " + username + "\n Password: " + password + "\n Name: " + name
+		return "User Type: " + userType + "\n Username: " + username + "\n Password: " + password + "\n Name: " + name
 				+ "\n UserId: " + userId;
 	}
 
