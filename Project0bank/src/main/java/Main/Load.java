@@ -11,7 +11,7 @@ import com.BoN.Users.Customer;
 public class Load {
 	
 	public static void load(){
-		Filer.readLogInFile();
+		//1Filer.readLogInFile();
 		
 		/*
 		 * try { File newFile = new File("loginFile.txt"); if (newFile.createNewFile())
