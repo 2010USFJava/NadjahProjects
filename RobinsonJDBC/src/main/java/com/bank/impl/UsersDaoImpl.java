@@ -14,6 +14,7 @@ import com.bank.beans.UserNotUniqueException;
 import com.bank.beans.Users;
 import com.bank.dao.UsersDao;
 import com.bank.util.ConnFactory;
+import com.bank.util.LogThis;
 
 public class UsersDaoImpl implements UsersDao{
 	public static ConnFactory cf = ConnFactory.getInstance();
@@ -123,6 +124,8 @@ public class UsersDaoImpl implements UsersDao{
 		ps.setInt(6, a.getUserId());
 		ps.executeUpdate();
 		
+		int id = a.getUserId();
+		LogThis.LogIt("info", "User " + id + " successfully updated.");
 	}
 
 	@Override
@@ -134,6 +137,8 @@ public class UsersDaoImpl implements UsersDao{
 				ps.setInt(1, a.getUserId());
 				ps.executeUpdate();
 				System.out.println("Account was deleted");
-			
+				
+		int id = a.getUserId();
+		LogThis.LogIt("info", "User " + id + " successfully deleted.");	
 	}
 }

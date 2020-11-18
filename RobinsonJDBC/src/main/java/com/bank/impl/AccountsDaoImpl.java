@@ -67,6 +67,8 @@ public class AccountsDaoImpl implements AccountsDao{
 		ps.setInt(2, a.getAccountId());
 		ps.executeUpdate();
 		
+		int id = a.getAccountId();
+		LogThis.LogIt("info", "Account " + id + " successfully withdrew " + amount);
 	}
 	@Override
 	//this goes in an if in the menus
@@ -101,7 +103,8 @@ public class AccountsDaoImpl implements AccountsDao{
 				acctId = rs.getInt(1);
 			}
 		}
-		//TODO log this
+		int id = a.getAccountId();
+		LogThis.LogIt("info", "Account " + id + " successfully created ");
 		return acctId;
 		
 	}
@@ -122,6 +125,7 @@ public class AccountsDaoImpl implements AccountsDao{
 			return thisA;
 		}else {
 			return null;
+		
 		}
 
 		
@@ -151,7 +155,9 @@ public class AccountsDaoImpl implements AccountsDao{
 		ps.setBoolean(1, b);
 		ps.setInt(2, a.getAccountId());
 		ps.executeUpdate();
-		//TODO log
+		
+		int id = a.getAccountId();
+		LogThis.LogIt("info", "Account " + id + " isActive status was set to " + b);
 	}
 
 	

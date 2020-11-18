@@ -9,6 +9,7 @@ import java.util.Scanner;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 import com.bank.beans.Accounts;
+import com.bank.beans.UserNotUniqueException;
 import com.bank.beans.Users;
 import com.bank.dao.AccountsDao;
 import com.bank.dao.User_AccountsDao;
@@ -190,6 +191,9 @@ public class Menu {
 				List<Accounts> l =null;
 				try {
 					 l = newUA.getAccountByUserId(a.getUserId());
+					 int id = a.getUserId();
+						LogThis.LogIt("info", "User " + id + " successfully deleted.");
+						System.out.println("User was successfully deleted.");
 					
 				} catch (SQLException e) {
 					System.out.println("No accounts associated. Create new account by choosing that option in the customer menu");
@@ -324,6 +328,9 @@ public class Menu {
 			try {
 				Users this1 = newU.getUserById(scan.nextInt());
 				newU.deleteUser(this1);
+				int id = this1.getUserId();
+				LogThis.LogIt("info", "User " + id + " successfully deleted.");
+				System.out.println("User was successfully deleted.");
 			} catch (SQLException e) {
 				System.out.println("Could not delete, please try again.");
 				e.printStackTrace();
@@ -426,6 +433,10 @@ public class Menu {
 		Users u = new Users(0,fname,lname,uname,pass, false);
 		try {
 			newU.newUser(u);
+		} catch (UserNotUniqueException e) {
+			
+			System.out.println("Username in use. Please enter a different username. Press enter to continue");
+			 makeNewUser();
 		} catch (SQLException e) {
 			System.out.println("Username in use. Please enter a different username. Press enter to continue");
 			 makeNewUser();

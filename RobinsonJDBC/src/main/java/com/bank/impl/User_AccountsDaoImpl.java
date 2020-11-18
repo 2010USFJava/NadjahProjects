@@ -12,6 +12,7 @@ import com.bank.beans.Accounts;
 import com.bank.beans.Users;
 import com.bank.dao.User_AccountsDao;
 import com.bank.util.ConnFactory;
+import com.bank.util.LogThis;
 
 public class User_AccountsDaoImpl implements User_AccountsDao {
 	public static ConnFactory cf = ConnFactory.getInstance();
@@ -83,7 +84,8 @@ public class User_AccountsDaoImpl implements User_AccountsDao {
 		ps.setInt(2, b);
 		ps.executeUpdate(); //int returned is how many rows were updated
 		
-		
+		System.out.println("Relation created!");
+		LogThis.LogIt("info", "User " + a + " successfully added as holder to account + " + b);
 	}
 
 	@Override
@@ -96,6 +98,8 @@ public class User_AccountsDaoImpl implements User_AccountsDao {
 		ps.executeUpdate();
 		
 		System.out.println("Relation Deleted");
+		LogThis.LogIt("info", "Usera " + a + " removed as account holder from account " + b);
+		
 	}
 	
 
