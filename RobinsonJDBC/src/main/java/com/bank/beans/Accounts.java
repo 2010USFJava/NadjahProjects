@@ -22,6 +22,7 @@ public class Accounts {
 		this.acct_opened =  java.sql.Date.valueOf(l);
 		this.active = active;
 	}
+	
 	public int getAccountId() {
 		return accountId;
 	}
@@ -40,7 +41,7 @@ public class Accounts {
 	public void setAcct_opened(Date acct_opened) {
 		this.acct_opened = acct_opened;
 	}
-	public boolean isActive() {
+	public boolean getActive() {
 		return active;
 	}
 	public void setActive(boolean active) {

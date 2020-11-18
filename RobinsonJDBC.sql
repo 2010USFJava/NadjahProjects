@@ -36,7 +36,9 @@ alter column "userId" set not null;
 
 alter table if exists users
 add unique(username);
- 
+
+alter table accounts 
+alter column balance  type numeric(1000, 2);
  
 select * from accounts;
 select * from user_accounts;
