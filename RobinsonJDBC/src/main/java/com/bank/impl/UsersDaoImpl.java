@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.bank.beans.Accounts;
 import com.bank.beans.UserNotUniqueException;
 import com.bank.beans.Users;
 import com.bank.dao.UsersDao;
@@ -122,5 +123,17 @@ public class UsersDaoImpl implements UsersDao{
 		ps.setInt(6, a.getUserId());
 		ps.executeUpdate();
 		
+	}
+
+	@Override
+	public void deleteUser(Users a) throws SQLException {
+		
+			Connection conn = cf.getConnection();
+			String sql= "delete from users where userId = ?";
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setInt(1, a.getUserId());
+				ps.executeUpdate();
+				System.out.println("Account was deleted");
+			
 	}
 }

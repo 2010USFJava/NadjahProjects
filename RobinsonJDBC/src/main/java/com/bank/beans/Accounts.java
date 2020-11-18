@@ -48,7 +48,7 @@ public class Accounts {
 	}
 	@Override
 	public String toString() {
-		return "Accounts [accountId=" + accountId + ", balance=" + balance + ", acct_opened=" + acct_opened
+		return "\n Accounts [accountId=" + accountId + ", balance=" + balance + ", acct_opened=" + acct_opened
 				+ ", active=" + active + "]";
 	}
 	

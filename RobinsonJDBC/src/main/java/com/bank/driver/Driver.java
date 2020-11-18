@@ -43,6 +43,17 @@ public class Driver {
 //			e.printStackTrace();
 //		}
 		
+		//test find user by username
+		//it work too BITCH
+//		try {
+//			Users p;
+//			newA.setStatus(newA.getAccountById(4),false);
+//			System.out.println(newA.getAccountById(4).toString());
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		
 		//do this for Admin menu
 //		UsersDaoImpl udi= new UsersDaoImpl(); 

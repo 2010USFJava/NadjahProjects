@@ -10,11 +10,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.bank.beans.Accounts;
 //import com.bank.beans.Users;
 import com.bank.dao.AccountsDao;
 import com.bank.util.ConnFactory;
+import com.bank.util.LogThis;
 
 public class AccountsDaoImpl implements AccountsDao{
 	public static ConnFactory cf = ConnFactory.getInstance();
@@ -31,6 +33,9 @@ public class AccountsDaoImpl implements AccountsDao{
 		ps.setInt(2, a.getAccountId());
 		ps.setBigDecimal(1, newBalance);
 		ps.executeUpdate();
+		
+		int id = a.getAccountId();
+		LogThis.LogIt("info", "Account " + id + " successfully deposited " + amount);
 	}
 
 	@Override
@@ -45,7 +50,8 @@ public class AccountsDaoImpl implements AccountsDao{
 		}else {
 			System.out.println("Only accounts with 0.00 balance may be deleted");
 		}
-		
+		int id = a.getAccountId();
+		LogThis.LogIt("info", "Account " + id + " successfully deleted");
 	}
 
 	@Override
@@ -79,16 +85,25 @@ public class AccountsDaoImpl implements AccountsDao{
 	}
 
 	@Override
-	public void newAccount(Accounts a) throws SQLException {
+	public int newAccount(Accounts a) throws SQLException {
+		int acctId = 0;
 		Connection conn = cf.getConnection();
 		String sql = "insert into accounts values(default,?,?,default)";
-		PreparedStatement ps = conn.prepareStatement(sql);
+		PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		//index refers to wish question mark in ^^ statement
 		//first index is 1
 		ps.setDate(1, a.getAcct_opened());
 		ps.setBigDecimal(2, a.getBalance());
-		ps.executeUpdate(); //int returned is how many rows were updated
-		//TODO make 
+		int s = ps.executeUpdate(); //int returned is how many rows were updated
+		if(s>0) {
+			ResultSet rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				acctId = rs.getInt(1);
+			}
+		}
+		//TODO log this
+		return acctId;
+		
 	}
 
 	@Override
@@ -111,7 +126,7 @@ public class AccountsDaoImpl implements AccountsDao{
 
 		
 	}
-	
+	@Override
 	public List<Accounts> viewAllAccounts() throws SQLException {
 		List<Accounts> accList = new ArrayList<Accounts>();
 		Connection conn = cf.getConnection();
@@ -127,4 +142,17 @@ public class AccountsDaoImpl implements AccountsDao{
 		
 		return accList;
 	}
+
+	@Override
+	public void setStatus(Accounts a, boolean b ) throws SQLException {
+		Connection conn = cf.getConnection();
+		String sql= "update accounts set  active = ?  where accountId = ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setBoolean(1, b);
+		ps.setInt(2, a.getAccountId());
+		ps.executeUpdate();
+		//TODO log
+	}
+
+	
 }
